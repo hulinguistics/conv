@@ -1,16 +1,21 @@
 <template>
-  <a :href="`/tags?tag=${encodeURIComponent(name)}`">
+  <a :href="withBase(`/tags?tag=${encodeURIComponent(name)}`)">
     <span class="HLTag">{{ name }}</span>
   </a>
 </template>
 
 <script lang="ts">
+import { withBase } from 'vitepress';
+
 export default {
   props: {
     name: {
       type: String,
       required: true,
     },
+  },
+  setup(props) {
+    return { withBase };
   },
 };
 </script>
