@@ -10,7 +10,7 @@ comment: "true"
 **文化観光部2000年式**を基にハングルとラテン文字を翻字します．  
 音節の区切れを明示したい場合は ハイフン `-` または `x` を入れてください．
 
-<HLConverterAlt src="/conv/hang.tsv" />
+<HLConverterAlt src="/conv/tsv/hang.tsv" />
 
 ## 対応表
 

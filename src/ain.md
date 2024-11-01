@@ -11,7 +11,7 @@ comment: "true"
 北海道アイヌ語、樺太アイヌ語対応．
 喉頭破裂音は `'`．
 
-<HLConverter src="/conv/ain.tsv" fontRight="Noto Sans JP" />
+<HLConverter src="/conv/tsv/ain.tsv" fontRight="Noto Sans JP" />
 
 ## 変換表
 

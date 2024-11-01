@@ -16,7 +16,7 @@ comment: "true"
 対応可能な入力方式は**京都・ハーバード式, ITRANS, Velthuis**.
 数字も対応可能. [詳細](/upload/nag.pdf)
 
-<HLConverter src="/conv/nag.tsv" />
+<HLConverter src="/conv/tsv/nag.tsv" />
 
 ## 対応表
 

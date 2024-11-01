@@ -16,7 +16,7 @@ comment: "true"
 
 数字は1~999の範囲のみ対応. 使用したフォントは [Shafarik](https://sci.ponomar.net/).
 
-<HLConverter src="/conv/glag.tsv" fontRight="Shafarik" />
+<HLConverter src="/conv/tsv/glag.tsv" fontRight="Shafarik" />
 
 ## 対応表
 

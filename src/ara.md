@@ -17,7 +17,7 @@ comment: "true"
 名詞の女性語尾のターは `_t`,
 ワスラ付きアリフは `/a`.
 
-<HLConverter src="/conv/ara.tsv" dirRight="rtl" />
+<HLConverter src="/conv/tsv/ara.tsv" dirRight="rtl" />
 
 ## 対応表解説
 

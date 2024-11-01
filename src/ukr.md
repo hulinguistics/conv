@@ -14,7 +14,7 @@ comment: "true"
 軟音記号 ь は `jj`, ダッシュ — は `--`, 引用符 « » は `" ""`.  
 アクセント記号は母音字の直後に `/` または `q` を入れてください.
 
-<HLConverter src="/conv/ukr.tsv" />
+<HLConverter src="/conv/tsv/ukr.tsv" />
 
 ## 対応表
 

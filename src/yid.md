@@ -19,4 +19,4 @@ comment: "true"
 「<span hebr>תּ</span>」`*t`．
 ラテン文字は語頭も小文字で入力すること．
 
-<HLConverter src="/conv/yid.tsv" dirRight="rtl" fontRight="Noto Sans Hebrew" />
+<HLConverter src="/conv/tsv/yid.tsv" dirRight="rtl" fontRight="Noto Sans Hebrew" />

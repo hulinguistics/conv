@@ -16,7 +16,7 @@ supralinear stroke <span copt>◌̄</span> `-`,
 ラテン文字記入上の区切り文字は `/`.
 [ALA-LC のラテン文字翻字表](https://www.loc.gov/catdir/cpso/romanization/coptic.pdf)
 
-<HLConverter src="/conv/cop.tsv" fontRight="Noto Sans Coptic" />
+<HLConverter src="/conv/tsv/cop.tsv" fontRight="Noto Sans Coptic" />
 
 ## 対応表
 

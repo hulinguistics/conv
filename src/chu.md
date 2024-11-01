@@ -16,7 +16,7 @@ comment: "true"
 一部の字母は後ろに `\` を加えることで別形になります (対応表を参照のこと).  
 数字は1~9999の範囲のみ対応. 詳細は[こちら](/upload/conv-chu.pdf).
 
-<HLConverter src="/conv/chu.tsv" fontRight="Monomakh Unicode" />
+<HLConverter src="/conv/tsv/chu.tsv" fontRight="Monomakh Unicode" />
 
 ## 対応表
 

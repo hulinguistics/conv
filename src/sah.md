@@ -8,7 +8,7 @@ tags:
 comment: "true"
 ---
 
-<HLConverter src="/conv/sah.tsv" />
+<HLConverter src="/conv/tsv/sah.tsv" />
 
 ## 対応表
 

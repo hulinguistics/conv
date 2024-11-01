@@ -15,7 +15,7 @@ comment: 'true'
 - **短母音**：`a_`, `i_`, `y_`, **長母音**：`aa`, `ee`, `ii`...
 - **下書きのイオタ**：`aai`, `eei`, `ooi`, `aa/i` など.
 
-<HLConverter src="/conv/grc.tsv" />
+<HLConverter src="/conv/tsv/grc.tsv" />
 
 ## 対応表
 

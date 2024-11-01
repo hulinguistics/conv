@@ -16,7 +16,7 @@ comment: "true"
 
 詳しくは下の「対応表」を参照してください．
 
-<HLConverterAlt src="/conv/lat.tsv" />
+<HLConverterAlt src="/conv/tsv/lat.tsv" />
 
 ## 対応表
 

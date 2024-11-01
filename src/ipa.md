@@ -6,7 +6,7 @@ tags:
   - IPA
 comment: "true"
 ---
-<HLConverter src="/conv/ipa.tsv" />
+<HLConverter src="/conv/tsv/ipa.tsv" />
 
 ## 対応表
 

@@ -16,7 +16,7 @@ comment: "true"
 
 [^1]:『ニューエクスプレス・スペシャル 日本語の隣人たちI+II』（白水社）の第2章「ニヴフ語の世界」（丹菊逸治著）を参考にした.
 
-<HLConverter src="/conv/niv.tsv" />
+<HLConverter src="/conv/tsv/niv.tsv" />
 
 ## 対応表
 

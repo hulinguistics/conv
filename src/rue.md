@@ -11,7 +11,7 @@ author:
 comment: "true"
 ---
 
-<HLConverter src="/conv/rue.tsv" />
+<HLConverter src="/conv/tsv/rue.tsv" />
 
 ## 対応表
 

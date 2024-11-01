@@ -11,7 +11,7 @@ author:
   - name: 宮西 大
 comment: "true"
 ---
-<HLConverter src="/conv/thaa.tsv" dirRight="rtl"/>
+<HLConverter src="/conv/tsv/thaa.tsv" dirRight="rtl"/>
 
 ## 対応表
 

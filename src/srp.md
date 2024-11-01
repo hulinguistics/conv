@@ -22,7 +22,7 @@ comment: "true"
 - 補助記号付き子音字：ћ (ć) `c/` `t/`, ђ (đ) `d/`  
 - アクセント記号：á `a/`, à `a//`, ȃ `a///`, ȁ `a////`
 
-<HLConverter src="/conv/srp.tsv" />
+<HLConverter src="/conv/tsv/srp.tsv" />
 
 ## 対応表
 

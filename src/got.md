@@ -11,7 +11,7 @@ author:
   - name: 宮西 大
 comment: "true"
 ---
-<HLConverter src="/conv/got.tsv" />
+<HLConverter src="/conv/tsv/got.tsv" />
 
 ## 対応表
 
