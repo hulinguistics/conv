@@ -10,6 +10,7 @@ export default (async () => {
     title: '文字変換器 by Huling',
     description:
       '主にラテン文字 (ローマ字) と別の文字を相互に変換するウェブアプリです。教会スラヴ語キリル文字やコプト文字、ゴート文字など、様々な文字に対応しています。',
+    base: '/conv/',
 
     // 最終更新の表示
     lastUpdated: true,
