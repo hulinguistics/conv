@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="post in posts" :key="post.frontMatter.title">
-      <a :href="post.path.replace('.md', '')">
+      <a :href="withBase(post.path.replace('.md', ''))">
         <h3>{{ post.frontMatter.title }}</h3>
       </a>
       <HLPageInfo :tags="post.frontMatter.tags" :tag-click="tagClick" :timestamp="post.lastUpdated"></HLPageInfo>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { useData } from 'vitepress';
+import { useData, withBase } from 'vitepress';
 import HLPageInfo from './HLPageInfo.vue';
 
 export default {
@@ -105,6 +105,7 @@ export default {
       pageNum,
       pageList,
       setPageNum,
+      withBase,
     };
   },
 };
