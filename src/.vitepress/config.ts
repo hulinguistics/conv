@@ -25,7 +25,7 @@ export default (async () => {
         {
           rel: 'apple-touch-icon',
           sizes: '180x180',
-          href: '/apple-touch-icon.png',
+          href: '/conv/apple-touch-icon.png',
         },
       ],
       [
@@ -34,7 +34,7 @@ export default (async () => {
           rel: 'icon',
           type: 'image/png',
           sizes: '32x32',
-          href: '/favicon-32x32.png',
+          href: '/conv/favicon-32x32.png',
         },
       ],
       [
@@ -43,11 +43,11 @@ export default (async () => {
           rel: 'icon',
           type: 'image/png',
           sizes: '16x16',
-          href: '/favicon-16x16.png',
+          href: '/conv/favicon-16x16.png',
         },
       ],
-      ['link', { rel: 'manifest', href: '/site.webmanifest' }],
-      ['link', { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#679fd1' }],
+      ['link', { rel: 'manifest', href: '/conv/site.webmanifest' }],
+      ['link', { rel: 'mask-icon', href: '/conv/safari-pinned-tab.svg', color: '#679fd1' }],
       ['meta', { name: 'msapplication-TileColor', content: '#679fd1' }],
       ['meta', { name: 'theme-color', content: '#ffffff' }],
     ],
