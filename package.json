@@ -35,22 +35,18 @@
     "vue": "^3.3.4"
   },
   "scripts": {
-    "dev": "yarn build:font-dry && yarn dev:vp",
-    "build": "yarn build:font && yarn build:vp",
+    "dev": "bun run build:font-dry && bun run dev:vp",
+    "build": "bun run build:font && bun run build:vp",
     "eject": "vitepress eject src",
-    "lint": "yarn lint:ts",
-    "fix": "yarn fix:ts",
+    "lint": "bun run lint:ts",
+    "fix": "bun run fix:ts",
     "dev:vp": "vitepress dev src",
-    "build-dry": "yarn build:font-dry && yarn build:vp",
-    "build:font": "yarn util:font subset src",
-    "build:font-dry": "yarn util:font subset-dry src",
+    "build-dry": "bun run build:font-dry && bun run build:vp",
+    "build:font": "bun run util:font subset src",
+    "build:font-dry": "bun run util:font subset-dry src",
     "build:vp": "vitepress build src",
-    "util:font": "ts-node-esm src/.vitepress/scripts/font.ts",
+    "util:font": "bun run src/.vitepress/scripts/font.ts",
     "lint:ts": "eslint --ext .js,.ts,.vue src",
     "fix:ts": "eslint --fix --ext .js,.ts,.vue src"
-  },
-  "volta": {
-    "node": "16.15.1",
-    "yarn": "1.22.19"
   }
 }
