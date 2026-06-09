@@ -82,74 +82,79 @@ export default {
       type: String,
       default: 'ltr',
     },
+    normalize: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup(props) {
-    // 変換表取得関数
-    let status = ref({ loading: true, error: '' });
-    const getList = async (path: string) =>
+    // 変換表の初期化
+    const status = ref({ loading: true, error: '' });
+    const list = ref();
+
+    (async () => {
       await axios
-        .get(path)
+        .get(props.src)
         .then((response) => {
           const data: any = papa.parse(response.data.trim(), {
             quoteChar: '\\',
             delimiter: '\t',
           }).data;
-          return {
+          list.value = {
             title: { left: data[0][0], right: data[0][1] },
-            set: data.slice(1, data.len),
-            test: converter('HELLO, WORLD!', data.slice(1, data.len)),
+            set: data.slice(1),
           };
         })
         .catch((error) => {
           console.log(error);
           status.value.error = error;
         });
-
-    // 変換表の初期化
-    const list = ref();
-    (async () => {
-      list.value = await getList(props.src);
       status.value.loading = false;
     })();
 
     // 文字変換関数
     const converter = (input: string, set: [string, string][]) => {
-      let output: string = input;
+      let output = input;
       while (
-        set.some((value: [string, string]) => {
-          const output_old = output;
+        set.some((value) => {
+          const prev = output;
           const isReg = /\/.+\//.test(value[0]);
           const key = isReg ? value[0].replace(/\/(.+)\//, '$1') : value[0];
           if (key) {
             output = isReg ? output.replace(new RegExp(key, 'gu'), value[1]) : output.replaceAll(key, value[1]);
-            return output !== output_old;
-          } else {
-            return false;
+            return output !== prev;
           }
+          return false;
         })
       );
       return output;
+    };
+
+    const convert = (input: string, set: [string, string][]) => {
+      const result = converter(props.normalize ? input.normalize('NFD') : input, set);
+      return props.normalize ? result.normalize('NFC') : result;
     };
 
     // テキストエリアの中身を更新
     const textarea = ref({
       left: { value: '', isFocus: false },
       right: { value: '', isFocus: false },
-      common: { height: '200px' },
     });
+
     watch(
       textarea,
       () => {
+        if (!list.value) return;
         if (textarea.value.left.isFocus)
-          textarea.value.right.value = converter(
+          textarea.value.right.value = convert(
             textarea.value.left.value,
-            list.value.set.map((v: any) => [...v]),
+            list.value.set.map((v: any) => [...v] as [string, string]),
           );
         if (textarea.value.right.isFocus)
-          textarea.value.left.value = converter(
+          textarea.value.left.value = convert(
             textarea.value.right.value,
-            list.value.set.map((v: any) => [...v].reverse()),
+            list.value.set.map((v: any) => [...v].reverse() as [string, string]),
           );
       },
       { deep: true },
