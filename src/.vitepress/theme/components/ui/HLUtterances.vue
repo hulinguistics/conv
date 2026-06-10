@@ -2,51 +2,35 @@
   <div ref="container"></div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
-export default {
-  el: '#utterances',
-  props: {
-    repo: {
-      type: String,
-      required: true,
-    },
-    theme: {
-      type: String,
-      default: 'github-light',
-      required: false,
-    },
-    issueTerm: {
-      type: String,
-      default: 'pathname',
-      required: false,
-    },
-    label: {
-      type: String,
-      default: '',
-      required: false,
-    },
+
+const props = withDefaults(
+  defineProps<{
+    repo: string;
+    theme?: string;
+    issueTerm?: string;
+    label?: string;
+  }>(),
+  {
+    theme: 'github-light',
+    issueTerm: 'pathname',
+    label: '',
   },
+);
 
-  setup(props) {
-    const container = ref();
+const container = ref<HTMLElement>();
 
-    onMounted(() => {
-      const utterances = window.document.createElement('script');
-      utterances.type = 'text/javascript';
-      utterances.src = 'https://utteranc.es/client.js';
-      utterances.async = true;
-      utterances.setAttribute('repo', props.repo);
-      utterances.setAttribute('label', props.label);
-      utterances.setAttribute('issue-term', props.issueTerm);
-      utterances.setAttribute('theme', props.theme);
-      utterances.crossOrigin = 'anonymous';
-      container.value.append(utterances);
-    });
-
-    return {
-      container,
-    };
-  },
-};
+onMounted(() => {
+  const utterances = window.document.createElement('script');
+  utterances.type = 'text/javascript';
+  utterances.src = 'https://utteranc.es/client.js';
+  utterances.async = true;
+  utterances.setAttribute('repo', props.repo);
+  utterances.setAttribute('label', props.label);
+  utterances.setAttribute('issue-term', props.issueTerm);
+  utterances.setAttribute('theme', props.theme);
+  utterances.crossOrigin = 'anonymous';
+  container.value!.append(utterances);
+});
 </script>

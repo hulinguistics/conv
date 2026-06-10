@@ -17,49 +17,34 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useData } from 'vitepress';
 import HLTag from './HLTag.vue';
 import HLPages from './HLPages.vue';
 
-export default {
-  components: {
-    HLTag,
-    HLPages,
-  },
-  setup() {
-    const { theme } = useData();
+const { theme } = useData();
 
-    // タグ一覧の生成
-    interface Post {
-      frontMatter: { tags?: string[] };
-    }
-    let tags: { name: string; count: number }[] = [];
-    theme.value.posts.forEach((post: Post) => {
-      post.frontMatter?.tags?.forEach((tag: string) => {
-        const existing = tags.find((t) => t.name === tag);
-        if (existing) existing.count++;
-        else tags.push({ name: tag, count: 1 });
-      });
-    });
-    tags.sort((a, b) => b.count - a.count);
+// タグ一覧の生成
+interface Post {
+  frontMatter: { tags?: string[] };
+}
+const tags: { name: string; count: number }[] = [];
+theme.value.posts.forEach((post: Post) => {
+  post.frontMatter?.tags?.forEach((tag: string) => {
+    const existing = tags.find((t) => t.name === tag);
+    if (existing) existing.count++;
+    else tags.push({ name: tag, count: 1 });
+  });
+});
+tags.sort((a, b) => b.count - a.count);
 
-    // クエリパラメータからタグを取得
-    const qparams = new URLSearchParams(location.href.split('?')[1]);
-    const getTag = () => decodeURIComponent(qparams.get('tag') || '') || undefined;
-    const tag = ref(getTag());
-    const setTag = (t: string) => {
-      tag.value = t;
-    };
-
-    return {
-      tag,
-      tags,
-      theme,
-      setTag,
-    };
-  },
+// クエリパラメータからタグを取得
+const qparams = new URLSearchParams(location.href.split('?')[1]);
+const getTag = () => decodeURIComponent(qparams.get('tag') || '') || undefined;
+const tag = ref(getTag());
+const setTag = (t: string) => {
+  tag.value = t;
 };
 </script>
 

@@ -5,32 +5,16 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useData } from 'vitepress';
 import HLTitle from '../ui/HLTitle.vue';
 import HLPageInfo from '../ui/HLPageInfo.vue';
 
-export default {
-  components: {
-    HLTitle,
-    HLPageInfo,
-  },
-  setup() {
-    const { page } = useData();
-    return { page };
-  },
-};
+const { page } = useData();
 </script>
 
 <style lang="scss" scoped>
 .HLDocBefore {
   margin-bottom: 24px;
-}
-
-.tags {
-  margin-top: 10px;
-  display: flex;
-  gap: 5px 10px;
-  flex-wrap: wrap;
 }
 </style>

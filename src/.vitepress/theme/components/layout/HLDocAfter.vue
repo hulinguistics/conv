@@ -21,32 +21,19 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useData } from 'vitepress';
 import HLUtterances from '../ui/HLUtterances.vue';
 
-export default {
-  components: {
-    HLUtterances,
-  },
-  setup() {
-    const { frontmatter } = useData();
+const { frontmatter } = useData();
 
-    // frontmatterの更新でissueTermも更新
-    const issueTerm = ref('Comment: ' + frontmatter.value.title);
-    const commentHide = ref(frontmatter.value.comment ? '' : 'hide');
-    watch(frontmatter, (c) => {
-      issueTerm.value = 'Comment: ' + c.title;
-      commentHide.value = c.comment ? '' : 'hide';
-    });
-
-    return {
-      issueTerm,
-      commentHide,
-    };
-  },
-};
+const issueTerm = ref('Comment: ' + frontmatter.value.title);
+const commentHide = ref(frontmatter.value.comment ? '' : 'hide');
+watch(frontmatter, (c) => {
+  issueTerm.value = 'Comment: ' + c.title;
+  commentHide.value = c.comment ? '' : 'hide';
+});
 </script>
 
 <style scoped>

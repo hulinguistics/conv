@@ -1,4 +1,4 @@
-import { spawn } from 'cross-spawn';
+import { spawn } from 'node:child_process';
 
 const git = async (options: string[], outFunc: (output: string) => unknown) => {
   return new Promise((resolve, reject) => {

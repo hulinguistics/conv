@@ -1,5 +1,5 @@
 import { getPosts } from './getPosts';
-import fs from 'fs-extra';
+import { readFile } from 'node:fs/promises';
 
 interface Category {
   name: string;
@@ -13,7 +13,7 @@ export async function sidebar(parent: string, categoryListPath: string) {
   const posts = await getPosts(parent);
 
   // src/.vitepress/categories/* からセクションのリストを作成
-  const categories: Category[] = JSON.parse(await fs.readFile(categoryListPath, 'utf-8')).filter((category: Category) =>
+  const categories: Category[] = JSON.parse(await readFile(categoryListPath, 'utf-8')).filter((category: Category) =>
     // そのセクションに属す記事が無いものを除外
     posts.some((post) => post.frontMatter.category === category.name),
   );
@@ -27,8 +27,6 @@ export async function sidebar(parent: string, categoryListPath: string) {
         text: post.frontMatter.title as string,
         link: post.path.replace('src', '').replace('index.md', ''),
       }))
-      .sort((a, b) =>
-        a.link.replace('.md', '') > b.link.replace('.md', '') ? 1 : a.link.replace('.md', '') < b.link.replace('.md', '') ? -1 : 0,
-      ),
+      .sort((a, b) => a.link.localeCompare(b.link)),
   }));
 }

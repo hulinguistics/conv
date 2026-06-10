@@ -7,48 +7,34 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import { PropType } from 'vue';
 import HLTag from './HLTag.vue';
 
-export default {
-  components: {
-    HLTag,
+const props = withDefaults(
+  defineProps<{
+    tags?: string[];
+    tagClick?: () => void;
+    timestamp?: number;
+  }>(),
+  {
+    tags: undefined,
+    tagClick: () => {},
+    timestamp: undefined,
   },
-  props: {
-    tags: {
-      type: Array as PropType<string[]>,
-      default: undefined,
+);
+
+const datetime = ref('');
+// onMounted で window を使う（SSR対策）
+onMounted(() => {
+  watch(
+    () => props.timestamp,
+    (ts) => {
+      datetime.value = ts ? new Date(ts).toLocaleString(window.navigator.language) : '';
     },
-    tagClick: {
-      type: Function,
-      default: () => {
-        return;
-      },
-    },
-    timestamp: {
-      type: Number,
-      default: undefined,
-    },
-  },
-  setup(props) {
-    const datetime = ref('');
-    // onMounted で window を使う（SSR対策）
-    onMounted(() => {
-      watch(
-        () => props.timestamp,
-        (ts) => {
-          datetime.value = ts ? new Date(ts).toLocaleString(window.navigator.language) : '';
-        },
-        { immediate: true },
-      );
-    });
-    return {
-      datetime,
-    };
-  },
-};
+    { immediate: true },
+  );
+});
 </script>
 
 <style lang="scss" scoped>

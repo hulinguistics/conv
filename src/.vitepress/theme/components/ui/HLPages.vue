@@ -11,8 +11,8 @@
         >&lt;</a
       >
       <div v-for="p in pageList" :key="p">
-        <a v-if="p != pageNum" :href="`?${tag ? `tag=${encodeURIComponent(tag)}&` : ''}p=${p}`" @click="setPageNum(p)">{{ p }}</a>
-        <span v-if="p == pageNum">{{ p }}</span>
+        <a v-if="p !== pageNum" :href="`?${tag ? `tag=${encodeURIComponent(tag)}&` : ''}p=${p}`" @click="setPageNum(p)">{{ p }}</a>
+        <span v-if="p === pageNum">{{ p }}</span>
       </div>
       <a
         v-if="pageNum < pageList.length"
@@ -24,96 +24,73 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useData, withBase } from 'vitepress';
 import HLPageInfo from './HLPageInfo.vue';
 
-export default {
-  components: {
-    HLPageInfo,
+const props = withDefaults(
+  defineProps<{
+    tag?: string;
+    tagClick?: () => void;
+    paginate?: number;
+    parent?: string;
+  }>(),
+  {
+    tag: undefined,
+    tagClick: () => {},
+    paginate: undefined,
+    parent: '/',
   },
-  props: {
-    tag: {
-      type: String,
-      default: undefined,
-    },
-    tagClick: {
-      type: Function,
-      default: () => {
-        return;
-      },
-    },
-    paginate: {
-      type: Number,
-      default: undefined,
-    },
-    parent: {
-      type: String,
-      default: '/',
-    },
-  },
-  setup(props) {
-    const { theme } = useData();
+);
 
-    interface Post {
-      path: string;
-      frontMatter: Record<string, unknown>;
-      lastUpdated: number;
-    }
+const { theme } = useData();
 
-    // 該当する投稿全て
-    const postsAll: Post[] = theme.value.posts
-      // parent で親ディレクトリ絞り込み，index.mdを除外
-      .filter((post: Post) => post.path.startsWith(props.parent) && !post.path.startsWith(props.parent + 'index'))
-      // tag が指定されているときは tag で絞り込み
-      .filter((post: Post) => (props.tag ? (post.frontMatter?.tags as string[] | undefined)?.includes(props.tag) : true))
-      // 最終更新日時順に並び換え
-      .sort((a: Post, b: Post) => b.lastUpdated - a.lastUpdated);
+interface Post {
+  path: string;
+  frontMatter: Record<string, unknown>;
+  lastUpdated: number;
+}
 
-    // クエリパラメータからページ番号を取得
-    const qparams = new URLSearchParams(location.href.split('?')[1]);
-    const getPageNum = () => parseInt(qparams.get('p') || '1', 10);
-    const pageNum = ref(getPageNum());
+// 該当する投稿全て
+const postsAll: Post[] = theme.value.posts
+  // parent で親ディレクトリ絞り込み，index.mdを除外
+  .filter((post: Post) => post.path.startsWith(props.parent) && !post.path.startsWith(props.parent + 'index'))
+  // tag が指定されているときは tag で絞り込み
+  .filter((post: Post) => (props.tag ? (post.frontMatter?.tags as string[] | undefined)?.includes(props.tag) : true))
+  // 最終更新日時順に並び換え
+  .sort((a: Post, b: Post) => b.lastUpdated - a.lastUpdated);
 
-    // paginate とページ番号で投稿を切り取り
-    const getPosts = (paginate: number | undefined, pageNum: number) => {
-      if (paginate !== undefined) {
-        // paginate が指定されているときは記事一覧を切り取り
-        return postsAll.slice((pageNum - 1) * paginate).slice(0, paginate);
-      } else {
-        // paginate が指定されていないとは全記事を取得
-        return postsAll;
-      }
-    };
-    const posts = ref(getPosts(props.paginate, pageNum.value));
+// クエリパラメータからページ番号を取得
+const qparams = new URLSearchParams(location.href.split('?')[1]);
+const getPageNum = () => parseInt(qparams.get('p') || '1', 10);
+const pageNum = ref(getPageNum());
 
-    // ページ番号リストの生成
-    const getPageList = (paginate: number | undefined) => {
-      if (paginate !== undefined) {
-        const pageLength = Math.ceil(postsAll.length / paginate);
-        return [...Array(pageLength)].map((_, i) => i + 1);
-      } else {
-        return [1];
-      }
-    };
-    const pageList = ref(getPageList(props.paginate));
+// paginate とページ番号で投稿を切り取り
+const slicePosts = (paginate: number | undefined, pageNum: number) => {
+  if (paginate !== undefined) {
+    return postsAll.slice((pageNum - 1) * paginate).slice(0, paginate);
+  } else {
+    return postsAll;
+  }
+};
+const posts = ref(slicePosts(props.paginate, pageNum.value));
 
-    const setPageNum = (pp: number) => {
-      pageNum.value = pp;
-      posts.value = getPosts(props.paginate, pageNum.value);
-      pageList.value = getPageList(props.paginate);
-    };
+// ページ番号リストの生成
+const getPageList = (paginate: number | undefined) => {
+  if (paginate !== undefined) {
+    const pageLength = Math.ceil(postsAll.length / paginate);
+    return [...Array(pageLength)].map((_, i) => i + 1);
+  } else {
+    return [1];
+  }
+};
+const pageList = ref(getPageList(props.paginate));
 
-    return {
-      theme,
-      posts,
-      pageNum,
-      pageList,
-      setPageNum,
-      withBase,
-    };
-  },
+const setPageNum = (pp: number) => {
+  pageNum.value = pp;
+  posts.value = slicePosts(props.paginate, pageNum.value);
+  pageList.value = getPageList(props.paginate);
 };
 </script>
 

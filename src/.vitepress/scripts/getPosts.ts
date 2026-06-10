@@ -1,23 +1,23 @@
-import { globby } from 'globby';
+import { glob, readFile } from 'node:fs/promises';
 import matter from 'gray-matter';
-import fs from 'fs-extra';
 import { getGitLastUpdated } from './git.js';
 
 // parent 下の拡張子 ext を持つファイルのパスと中身を取得
 export async function getFiles(parent: string, ext: string[]) {
+  const paths = await Array.fromAsync(
+    glob(
+      ext.map((e) => '**/*.' + e),
+      {
+        exclude: (f) => f.includes('node_modules') || f === 'README.md',
+      },
+    ),
+  );
   return await Promise.all(
-    (
-      await globby(
-        ext.map((e) => '**.' + e),
-        {
-          ignore: ['node_modules', 'README.md'],
-        },
-      )
-    )
-      .filter((path) => path.startsWith(parent))
-      .map(async (path) => {
-        const content = await fs.readFile(path, 'utf-8');
-        return { path, content };
+    paths
+      .filter((p) => p.startsWith(parent))
+      .map(async (p) => {
+        const content = await readFile(p, 'utf-8');
+        return { path: p, content };
       }),
   );
 }

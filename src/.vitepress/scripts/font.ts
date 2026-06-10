@@ -1,6 +1,6 @@
-import fs from 'fs-extra';
-import fetch from 'node-fetch';
-import path from 'path';
+import { existsSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import subsetFont from 'subset-font';
 import { getFiles } from './getPosts.js';
 
@@ -50,10 +50,10 @@ async function getCharaList(parent: string) {
 // サブセットフォントを作成
 async function createSubsetFont(parent: string) {
   const fontDir = path.join(publicDirPath, fontUrl);
-  if (fs.existsSync(fontDir)) fs.removeSync(fontDir);
-  fs.mkdirsSync(fontDir);
+  if (existsSync(fontDir)) rmSync(fontDir, { recursive: true });
+  mkdirSync(fontDir, { recursive: true });
   const charas = await getCharaList(parent);
-  const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
+  const config = JSON.parse(await readFile(configPath, 'utf-8'));
 
   for (const subset of config.subsets) {
     for (const font of subset.fonts) {
@@ -65,7 +65,7 @@ async function createSubsetFont(parent: string) {
 
       // サブセットの書き込み
       const fontPath = path.join(fontDir, path.basename(font.src, path.extname(font.src)) + '.woff2');
-      fs.writeFileSync(fontPath, subsetBuffer);
+      writeFileSync(fontPath, subsetBuffer);
 
       // Pathをconfigに追加
       font.src = path.join(fontUrl, path.basename(font.src, path.extname(font.src)) + '.woff2');
@@ -78,7 +78,7 @@ async function createSubsetFont(parent: string) {
 
 // サブセットフォントを作成(ドライラン)
 async function createSubsetFontDry(_parent: string) {
-  const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
+  const config = JSON.parse(await readFile(configPath, 'utf-8'));
 
   createScss(config, scssPath);
   return config;
@@ -155,7 +155,7 @@ async function createScss(config: FontConfig, scssPath: string) {
   });
 
   // Scss を scssPath に書き込み
-  if (result) fs.writeFileSync(scssPath, object2scss(result));
+  if (result) writeFileSync(scssPath, object2scss(result));
 }
 
 // // in

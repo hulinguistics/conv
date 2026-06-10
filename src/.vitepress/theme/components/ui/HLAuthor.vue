@@ -11,45 +11,33 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useData } from 'vitepress';
 
-export default {
-  setup() {
-    const { frontmatter } = useData();
+const { frontmatter } = useData();
 
-    type AuthorEntry = string | { name?: string; url?: string };
-    const getAuthor = (value: Record<string, unknown>) => {
-      const authorObject = (author: AuthorEntry) => ({
-        name: typeof author === 'string' ? author : (author.name ?? ''),
-        url: typeof author === 'string' ? undefined : author.url,
-      });
+type AuthorEntry = string | { name?: string; url?: string };
+const getAuthor = (value: Record<string, unknown>) => {
+  const authorObject = (author: AuthorEntry) => ({
+    name: typeof author === 'string' ? author : (author.name ?? ''),
+    url: typeof author === 'string' ? undefined : author.url,
+  });
 
-      const author = value.author as AuthorEntry | AuthorEntry[] | undefined;
-      if (!author || (Array.isArray(author) && !author.length)) {
-        return [];
-      } else if (Array.isArray(author)) {
-        // author が複数人のとき
-        return author.map(authorObject);
-      } else {
-        // author が一人のとき
-        return [authorObject(author)];
-      }
-    };
-
-    // frontmatterの更新でauthorsも更新
-    const authors = ref(getAuthor(frontmatter.value));
-    watch(frontmatter, (c) => {
-      authors.value = getAuthor(c);
-    });
-
-    return {
-      frontmatter,
-      authors,
-    };
-  },
+  const author = value.author as AuthorEntry | AuthorEntry[] | undefined;
+  if (!author || (Array.isArray(author) && !author.length)) {
+    return [];
+  } else if (Array.isArray(author)) {
+    return author.map(authorObject);
+  } else {
+    return [authorObject(author)];
+  }
 };
+
+const authors = ref(getAuthor(frontmatter.value));
+watch(frontmatter, (c) => {
+  authors.value = getAuthor(c);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -58,10 +46,5 @@ export default {
   font-size: 14px;
   font-weight: 500;
   color: var(--vp-c-text-2);
-
-  @media (min-width: 640px) {
-    font-size: 14px;
-    font-weight: 500;
-  }
 }
 </style>
