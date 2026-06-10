@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import { useData } from 'vitepress';
-import HLTitle from '../HLTitle.vue';
-import HLPageInfo from '../HLPageInfo.vue';
+import HLTitle from '../ui/HLTitle.vue';
+import HLPageInfo from '../ui/HLPageInfo.vue';
 
 export default {
   components: {

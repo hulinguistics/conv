@@ -8,8 +8,8 @@ import HLDocFooterBefore from './components/layout/HLDocFooterBefore.vue';
 
 // 記事中で使うコンポーネント
 import HLConverter from './components/HLConverter.vue';
-import HLTags from './components/HLTags.vue';
-import HLPages from './components/HLPages.vue';
+import HLTags from './components/ui/HLTags.vue';
+import HLPages from './components/ui/HLPages.vue';
 
 import './scss/index.scss';
 
