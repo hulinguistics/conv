@@ -50,7 +50,7 @@ async function getCharaList(parent: string) {
 // サブセットフォントを作成
 async function createSubsetFont(parent: string) {
   const fontDir = path.join(publicDirPath, fontUrl);
-  fs.existsSync(fontDir) && fs.removeSync(fontDir);
+  if (fs.existsSync(fontDir)) fs.removeSync(fontDir);
   fs.mkdirsSync(fontDir);
   const charas = await getCharaList(parent);
   const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));

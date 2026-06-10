@@ -25,9 +25,7 @@ export async function getFiles(parent: string, ext: string[]) {
 // parent 下の記事の取得
 export const getPosts = async (parent: string) =>
   await Promise.all(
-    (
-      await getFiles(parent, ['md'])
-    ).map(async (file) => {
+    (await getFiles(parent, ['md'])).map(async (file) => {
       const { content, data } = matter(file.content);
       return {
         path: file.path.replace('src', ''),

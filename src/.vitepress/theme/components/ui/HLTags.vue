@@ -39,7 +39,8 @@ export default {
     theme.value.posts.forEach((post: Post) => {
       post.frontMatter?.tags?.forEach((tag: string) => {
         const existing = tags.find((t) => t.name === tag);
-        existing ? existing.count++ : tags.push({ name: tag, count: 1 });
+        if (existing) existing.count++;
+        else tags.push({ name: tag, count: 1 });
       });
     });
     tags.sort((a, b) => b.count - a.count);

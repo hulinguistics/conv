@@ -22,7 +22,7 @@ export default {
     type AuthorEntry = string | { name?: string; url?: string };
     const getAuthor = (value: Record<string, unknown>) => {
       const authorObject = (author: AuthorEntry) => ({
-        name: typeof author === 'string' ? author : author.name ?? '',
+        name: typeof author === 'string' ? author : (author.name ?? ''),
         url: typeof author === 'string' ? undefined : author.url,
       });
 
