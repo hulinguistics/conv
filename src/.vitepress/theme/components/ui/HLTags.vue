@@ -32,16 +32,14 @@ export default {
     const { theme } = useData();
 
     // タグ一覧の生成
+    interface Post {
+      frontMatter: { tags?: string[] };
+    }
     let tags: { name: string; count: number }[] = [];
-    theme.value.posts.forEach((post: any) => {
-      post.frontMatter?.tags?.forEach((tag: any) => {
-        if (tags.some((t) => t.name == tag)) {
-          tags.forEach((t) => {
-            if (t.name == tag) t.count++;
-          });
-        } else {
-          tags.push({ name: tag, count: 1 });
-        }
+    theme.value.posts.forEach((post: Post) => {
+      post.frontMatter?.tags?.forEach((tag: string) => {
+        const existing = tags.find((t) => t.name === tag);
+        existing ? existing.count++ : tags.push({ name: tag, count: 1 });
       });
     });
     tags.sort((a, b) => b.count - a.count);

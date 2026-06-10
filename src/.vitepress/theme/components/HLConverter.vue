@@ -57,7 +57,6 @@
 
 <script lang="ts">
 import { ref, watch } from 'vue';
-import axios from 'axios';
 import papa from 'papaparse';
 
 export default {
@@ -90,14 +89,18 @@ export default {
 
   setup(props) {
     // 変換表の初期化
+    interface ListData {
+      title: { left: string; right: string };
+      set: string[][];
+    }
     const status = ref({ loading: true, error: '' });
-    const list = ref();
+    const list = ref<ListData>();
 
     (async () => {
-      await axios
-        .get(props.src)
-        .then((response) => {
-          const data: any = papa.parse(response.data.trim(), {
+      await fetch(props.src)
+        .then((response) => response.text())
+        .then((text) => {
+          const data = papa.parse<string[]>(text.trim(), {
             quoteChar: '\\',
             delimiter: '\t',
           }).data;
@@ -149,12 +152,12 @@ export default {
         if (textarea.value.left.isFocus)
           textarea.value.right.value = convert(
             textarea.value.left.value,
-            list.value.set.map((v: any) => [...v] as [string, string]),
+            list.value.set.map((v) => [...v] as [string, string]),
           );
         if (textarea.value.right.isFocus)
           textarea.value.left.value = convert(
             textarea.value.right.value,
-            list.value.set.map((v: any) => [...v].reverse() as [string, string]),
+            list.value.set.map((v: string[]) => [...v].reverse() as [string, string]),
           );
       },
       { deep: true },

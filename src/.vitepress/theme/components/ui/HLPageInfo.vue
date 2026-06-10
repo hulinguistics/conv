@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { PropType } from 'vue';
 import HLTag from './HLTag.vue';
 
@@ -34,12 +34,15 @@ export default {
   },
   setup(props) {
     const datetime = ref('');
+    // onMounted で window を使う（SSR対策）
     onMounted(() => {
-      watchEffect(() => {
-        if (props.timestamp) {
-          datetime.value = new Date(props.timestamp).toLocaleString(window.navigator.language);
-        }
-      });
+      watch(
+        () => props.timestamp,
+        (ts) => {
+          datetime.value = ts ? new Date(ts).toLocaleString(window.navigator.language) : '';
+        },
+        { immediate: true },
+      );
     });
     return {
       datetime,

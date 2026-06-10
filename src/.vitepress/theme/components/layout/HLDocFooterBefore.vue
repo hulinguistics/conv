@@ -12,9 +12,6 @@ export default {
   components: {
     HLAuthor,
   },
-  setup() {
-    return {};
-  },
 };
 </script>
 

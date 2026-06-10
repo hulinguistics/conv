@@ -19,17 +19,22 @@ export default {
   setup() {
     const { frontmatter } = useData();
 
-    const getAuthor = (value: any) => {
-      const authorObject = (author: any) => ({ name: author.name || author, url: author.url });
+    type AuthorEntry = string | { name?: string; url?: string };
+    const getAuthor = (value: Record<string, unknown>) => {
+      const authorObject = (author: AuthorEntry) => ({
+        name: typeof author === 'string' ? author : author.name ?? '',
+        url: typeof author === 'string' ? undefined : author.url,
+      });
 
-      if (!value.author?.length) {
+      const author = value.author as AuthorEntry | AuthorEntry[] | undefined;
+      if (!author || (Array.isArray(author) && !author.length)) {
         return [];
-      } else if (typeof value.author === 'object' && value.author[0] !== undefined) {
+      } else if (Array.isArray(author)) {
         // author が複数人のとき
-        return value.author.map(authorObject);
+        return author.map(authorObject);
       } else {
         // author が一人のとき
-        return [authorObject(value.author)];
+        return [authorObject(author)];
       }
     };
 

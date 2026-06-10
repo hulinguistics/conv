@@ -56,14 +56,20 @@ export default {
   setup(props) {
     const { theme } = useData();
 
+    interface Post {
+      path: string;
+      frontMatter: Record<string, unknown>;
+      lastUpdated: number;
+    }
+
     // 該当する投稿全て
-    const postsAll = theme.value.posts
+    const postsAll: Post[] = theme.value.posts
       // parent で親ディレクトリ絞り込み，index.mdを除外
-      .filter((post: any) => post.path.startsWith(props.parent) && !post.path.startsWith(props.parent + 'index'))
+      .filter((post: Post) => post.path.startsWith(props.parent) && !post.path.startsWith(props.parent + 'index'))
       // tag が指定されているときは tag で絞り込み
-      .filter((post: any) => (props.tag ? post.frontMatter?.tags?.includes(props.tag) : true))
+      .filter((post: Post) => (props.tag ? (post.frontMatter?.tags as string[] | undefined)?.includes(props.tag) : true))
       // 最終更新日時順に並び換え
-      .sort((a: any, b: any) => b.lastUpdated - a.lastUpdated);
+      .sort((a: Post, b: Post) => b.lastUpdated - a.lastUpdated);
 
     // クエリパラメータからページ番号を取得
     const qparams = new URLSearchParams(location.href.split('?')[1]);
@@ -83,7 +89,7 @@ export default {
     const posts = ref(getPosts(props.paginate, pageNum.value));
 
     // ページ番号リストの生成
-    const getPageList = (paginate: number | undefined, pageNum: number) => {
+    const getPageList = (paginate: number | undefined) => {
       if (paginate !== undefined) {
         const pageLength = Math.ceil(postsAll.length / paginate);
         return [...Array(pageLength)].map((_, i) => i + 1);
@@ -91,12 +97,12 @@ export default {
         return [1];
       }
     };
-    const pageList = ref(getPageList(props.paginate, pageNum.value));
+    const pageList = ref(getPageList(props.paginate));
 
     const setPageNum = (pp: number) => {
       pageNum.value = pp;
       posts.value = getPosts(props.paginate, pageNum.value);
-      pageList.value = getPageList(props.paginate, pageNum.value);
+      pageList.value = getPageList(props.paginate);
     };
 
     return {
@@ -112,15 +118,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h2 {
-  display: flex;
-  gap: 0.1em;
-
-  &::before {
-    content: '#';
-  }
-}
-
 .paginate {
   display: flex;
   margin-top: 40px;

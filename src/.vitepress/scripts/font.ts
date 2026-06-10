@@ -21,7 +21,9 @@ const publicDirPath = 'src/public/';
 // font.scss
 const scssPath = 'src/.vitepress/theme/scss/font.scss';
 
-const typeList = (typ: string) => {
+type FontTask = (arg: string) => Promise<unknown>;
+
+const typeList = (typ: string): FontTask => {
   switch (typ) {
     case 'charas':
       return getCharaList;
@@ -75,15 +77,34 @@ async function createSubsetFont(parent: string) {
 }
 
 // サブセットフォントを作成(ドライラン)
-async function createSubsetFontDry(parent: string) {
+async function createSubsetFontDry(_parent: string) {
   const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
 
   createScss(config, scssPath);
   return config;
 }
 
+interface FontEntry {
+  src: string;
+  [key: string]: string;
+}
+interface SubsetConfig {
+  name?: string;
+  tag?: string;
+  fonts: FontEntry[];
+}
+interface FontConfig {
+  root_family?: string[];
+  subsets: SubsetConfig[];
+}
+interface ScssObject {
+  selector: string;
+  style?: { property: string; value: string }[];
+  child?: ScssObject[];
+}
+
 // フォントを指定する Scss を生成
-async function createScss(config: any, scssPath: string) {
+async function createScss(config: FontConfig, scssPath: string) {
   const result: object[] = [];
 
   // :root のフォントの指定
@@ -100,7 +121,7 @@ async function createScss(config: any, scssPath: string) {
   }
 
   // サブセットしたフォントを定義
-  config.subsets.forEach((subset: any) => {
+  config.subsets.forEach((subset) => {
     // 名前が無いときは何もしない
     if (!subset.name) return;
 
@@ -116,7 +137,7 @@ async function createScss(config: any, scssPath: string) {
       });
     }
 
-    subset.fonts.forEach((font: any) => {
+    subset.fonts.forEach((font) => {
       result.push({
         selector: '@font-face',
         style: [
@@ -149,10 +170,10 @@ async function createScss(config: any, scssPath: string) {
 // ]
 // // out
 // "p{color:#333;}"
-const object2scss = (obj: any) =>
+const object2scss = (obj: ScssObject[]) =>
   obj
     .map(
-      (o: any) =>
+      (o) =>
         o.selector &&
         o.selector +
           '{' +

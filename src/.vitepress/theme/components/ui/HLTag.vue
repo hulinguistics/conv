@@ -4,20 +4,10 @@
   </a>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { withBase } from 'vitepress';
 
-export default {
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props) {
-    return { withBase };
-  },
-};
+defineProps<{ name: string }>();
 </script>
 
 <style lang="scss" scoped>

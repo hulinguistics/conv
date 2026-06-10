@@ -9,7 +9,6 @@
     "@types/subset-font": "^1.4.0",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
-    "axios": "^1.4.0",
     "cross-spawn": "^7.0.3",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
